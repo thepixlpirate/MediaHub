@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!-- Unraid template for MediaHub. Replace YOUR-GITHUB-NAME (and "mediahub" if your repo has another name), then
+     copy this file to /boot/config/plugins/dockerMan/templates-user/my-MediaHub.xml on your Unraid flash drive.
+     It then appears under Docker > Add Container > Template. -->
+<Container version="2">
+  <Name>MediaHub</Name>
+  <Repository>ghcr.io/YOUR-GITHUB-NAME/mediahub:latest</Repository>
+  <Registry>https://github.com/YOUR-GITHUB-NAME/mediahub/pkgs/container/mediahub</Registry>
+  <Network>bridge</Network>
+  <Privileged>false</Privileged>
+  <Support>https://github.com/YOUR-GITHUB-NAME/mediahub/issues</Support>
+  <Project>https://github.com/YOUR-GITHUB-NAME/mediahub</Project>
+  <Overview>One web page and one login for Radarr, Sonarr, Lidarr, Bookarr, qBittorrent and SABnzbd, with an overview of everything, manual import, full settings, RSS and search.</Overview>
+  <Category>MediaApp:Video MediaApp:Music Downloaders: Tools:</Category>
+  <WebUI>http://[IP]:[PORT:8690]/</WebUI>
+  <Icon>https://raw.githubusercontent.com/YOUR-GITHUB-NAME/mediahub/main/static/icon.png</Icon>
+  <Config Name="Web UI port" Target="8690" Default="8690" Mode="tcp" Description="Port for the MediaHub web page." Type="Port" Display="always" Required="true" Mask="false">8690</Config>
+  <Config Name="Config folder" Target="/config" Default="/mnt/user/appdata/mediahub" Mode="rw" Description="Your login, app addresses, API keys and image cache. To keep your current settings, point this at the folder your old container used for /config." Type="Path" Display="always" Required="true" Mask="false">/mnt/user/appdata/mediahub</Config>
+  <Config Name="Behind a tunnel or reverse proxy" Target="HUB_TRUST_PROXY" Default="0" Mode="" Description="Set to 1 if you reach MediaHub through Cloudflare Tunnel, nginx or similar." Type="Variable" Display="always" Required="false" Mask="false">0</Config>
+</Container>

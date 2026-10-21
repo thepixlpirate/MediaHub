@@ -1,0 +1,141 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>MediaHub</title><link rel="icon" href="/icon.png"><link rel="apple-touch-icon" href="/icon.png"><meta name="apple-mobile-web-app-title" content="MediaHub">
+<style>
+:root{--bg:#000;--c:#161616;--c2:#222;--ln:rgba(255,255,255,.1);--t:#f2f2f2;--m:#9a9a9a;--r:#fb5a7a;--ac:#7c5cff}
+*{box-sizing:border-box;margin:0;padding:0}html,body{height:100%;width:100%;overflow:hidden;position:fixed;inset:0;overscroll-behavior:none}body{background:var(--bg);color:var(--t);font:15px system-ui,-apple-system,Segoe UI,sans-serif}
+.logo{width:36px;height:36px;border-radius:12px;background:linear-gradient(135deg,#4f46e5,#7c5cff 60%,#b06cf5);display:grid;place-items:center;font-weight:800;color:#fff}
+#login{position:fixed;inset:0;display:none;place-items:center;z-index:50}
+#login{background:var(--bg)}#login .box{width:min(400px,92vw);background:var(--c);border:1px solid var(--ln);border-radius:22px;box-shadow:0 30px 70px rgba(0,0,0,.7);padding:30px 40px 28px;text-align:center}
+#login .lg{display:block;width:170px;height:170px;border-radius:50%;object-fit:cover;margin:0 auto 12px}#login h2{font-weight:400;font-size:24px;margin-bottom:18px}
+label.k{display:block;text-align:left;font-size:12px;color:var(--m);margin-top:14px}
+input.f{width:100%;padding:12px 14px;border:1px solid var(--ln);border-radius:12px;background:#0a0a0a;color:var(--t);margin-top:4px;outline:0;font:inherit}input.f:focus{border-color:#a78bfa;box-shadow:0 0 0 3px rgba(124,92,255,.25)}
+.rm{display:flex;align-items:center;gap:8px;font-size:14px;margin:14px 0;color:var(--m);text-align:left}.rm input{accent-color:#a78bfa}
+.go{width:100%;padding:12px;background:linear-gradient(135deg,#4f46e5,#7c5cff 60%,#b06cf5);color:#fff;border:0;border-radius:99px;font-weight:700;letter-spacing:1px;cursor:pointer}
+.err{color:var(--r);font-size:13px;min-height:18px;margin-top:10px}#login small{display:block;margin-top:14px;color:var(--m)}
+#shell{display:none;position:fixed;top:0;left:0;right:0;bottom:0;flex-direction:column;overflow:hidden}
+#bar{display:flex;align-items:center;gap:12px;padding:8px 16px;padding-top:calc(8px + env(safe-area-inset-top));background:#0f0f0f;border-bottom:1px solid var(--ln);flex:none;position:relative;z-index:5}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:20px;margin-right:10px}.brand .logo{width:32px;height:32px;border-radius:10px;font-size:16px}
+#tabs{display:flex;gap:6px}.tab{display:flex;align-items:center;gap:8px;padding:8px 16px;border-radius:99px;border:1px solid transparent;background:none;color:var(--m);cursor:pointer;font:inherit;font-weight:600}
+.tab i{width:9px;height:9px;border-radius:50%}.ti{width:20px;height:20px;object-fit:contain;border-radius:5px;flex:none}#ddi{width:30px;height:30px;display:none}@media(min-width:861px){#ddi{display:none!important}}.tab.on{background:var(--c2);color:#fff;box-shadow:inset 0 0 0 1.5px var(--tc)}.tab b{background:var(--r);border-radius:99px;font-size:11px;padding:1px 7px;color:#fff}
+#dd{display:none;flex:1;min-width:0;padding:9px 14px;border-radius:99px;border:1.5px solid var(--ac);background:var(--c2);color:#fff;font:inherit;font-weight:600}
+.sp{flex:1}.btn{border:1px solid var(--ln);background:var(--c2);color:var(--t);border-radius:99px;padding:8px 16px;cursor:pointer;font:inherit;font-weight:600;font-size:14px}.btn.p{background:linear-gradient(135deg,#4f46e5,#7c5cff);border:0}
+#frames{flex:1;position:relative;min-height:0}#frames iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:none;background:var(--bg)}
+#md{position:fixed;inset:0;background:rgba(5,7,18,.8);backdrop-filter:blur(6px);display:none;place-items:center;z-index:60;padding:14px}#md .box{width:min(440px,100%);background:var(--c);border:1px solid var(--ln);border-radius:22px;padding:22px}
+#toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--c2);border:1px solid var(--ln);padding:10px 20px;border-radius:99px;display:none;z-index:70}
+
+.brand{cursor:pointer;border-radius:12px;padding:2px 8px 2px 2px}.brand:hover{background:var(--c2)}.brand.on span{color:#c4b5fd}
+#ov{position:absolute;inset:0;overflow:auto;display:none;padding:22px 26px 40px;-webkit-overflow-scrolling:touch}
+#ov h1{font-size:28px;font-weight:800}#ov .sub{color:var(--m);font-size:13px;margin:4px 0 18px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.og{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:14px;margin-bottom:16px}
+.oc{background:var(--c);border:1px solid var(--ln);border-radius:20px;padding:16px;min-width:0}.oc h3{font-size:16px;margin-bottom:12px;display:flex;align-items:center;gap:8px}.oc h3 small{margin-left:auto;font-weight:500;color:var(--m);font-size:12px}
+.st{cursor:pointer;transition:border-color .15s}.st:hover{border-color:var(--sc)}.st .tl{display:flex;align-items:center;gap:8px;color:var(--m);font-size:13px}.st .tl img{width:22px;height:22px;object-fit:contain;border-radius:5px}.st .tl i{width:10px;height:10px;border-radius:50%;background:var(--sc)}
+.st .n{font-size:30px;font-weight:800;margin:6px 0 2px}.st .x{font-size:12px;color:var(--m);line-height:1.5}.st.off{opacity:.5}
+.o2{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:16px;margin-bottom:16px}.wide{grid-column:1/-1}
+.rec{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:14px}.rc{cursor:pointer;min-width:0}.rc .po{aspect-ratio:2/3;border-radius:14px;background:var(--c2) center/cover;position:relative;overflow:hidden}.rc.sq .po{aspect-ratio:1}
+.rc .po b{position:absolute;left:6px;top:6px;font-size:10px;padding:2px 7px;border-radius:7px;color:#fff;background:var(--sc)}.rc .po .ph{position:absolute;inset:0;display:grid;place-items:center;font-size:34px;opacity:.5}
+.rc .t{font-size:13px;font-weight:600;margin-top:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.rc .s{font-size:11px;color:var(--m);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lr{display:flex;align-items:center;gap:10px;padding:9px 0;border-top:1px solid var(--ln);font-size:13px;cursor:pointer;min-width:0}.lr:first-of-type{border-top:0}.lr .d{flex:1;min-width:0}.lr .d div{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.lr .m{font-size:12px;color:var(--m)}
+.dot{width:9px;height:9px;border-radius:50%;flex:none;background:var(--sc)}.pb{height:5px;border-radius:9px;background:#2a2a2a;margin-top:5px;overflow:hidden}.pb i{display:block;height:100%;background:var(--sc)}
+.tg2{font-size:11px;font-weight:700;padding:2px 8px;border-radius:8px;background:#2c2c2c;white-space:nowrap}.tg2.g{background:rgba(52,211,153,.18);color:#6ee7b7}.tg2.r{background:rgba(251,90,122,.18);color:#fda4b8}.tg2.o{background:rgba(251,146,60,.18);color:#fdba74}
+.dk .bar{height:8px;border-radius:9px;background:#2a2a2a;margin:6px 0 2px;overflow:hidden}.dk .bar i{display:block;height:100%;background:linear-gradient(90deg,#4f46e5,#b06cf5)}
+.emp{color:var(--m);font-size:13px}
+@media(max-width:860px){#ov{padding:16px 14px 40px}.og{grid-template-columns:repeat(2,1fr);gap:10px}.st .n{font-size:24px}.o2{grid-template-columns:1fr}.rec{grid-template-columns:repeat(3,1fr);gap:10px}}
+@media(max-width:860px){#tabs{display:none}#dd{display:block}.brand span{display:none}.sp{display:none}}
+</style></head><body>
+<div id="login"><form class="box" id="lf"><img class="lg" src="/icon.png" alt="MediaHub" style="border-radius:22%;object-fit:contain"><h2>Sign in</h2>
+<label class="k">Username</label><input class="f" id="un" autocomplete="username" required><label class="k">Password</label><input class="f" id="pw" type="password" autocomplete="current-password" required>
+<label class="k" id="p2l" style="display:none">Confirm password</label><input class="f" id="pw2" type="password" style="display:none">
+<div class="rm"><input type="checkbox" id="rem" checked>Remember me</div><button class="go" id="gb">SIGN IN</button><div class="err" id="le"></div><small id="lh"></small></form></div>
+<div id="shell"><div id="bar"><div class="brand" id="brand" onclick="sw('home')" title="Overview"><img class="logo" src="/icon.png" alt=""><span>MediaHub</span></div><div id="tabs"></div><img id="ddi" class="ti" alt="" style="display:none" onload="this.style.display='block'" onerror="this.style.display='none'"><select id="dd" onchange="sw(this.value)"></select><div class="sp"></div></div><div id="frames"><div id="ov"></div></div></div>
+<div id="toast"></div>
+<script>
+const $=i=>document.getElementById(i),X={"X-Requested-With":"hub"},SV=[["radarr","Radarr","#FFC230"],["sonarr","Sonarr","#00CCFF"],["lidarr","Lidarr","#009252"],["bookarr","Bookarr","#750028"],["qbittorrent","qBittorrent","#354E6D"],["sabnzbd","SABnzbd","#BD5D09"]];
+const post=(u,b)=>fetch(u,{method:"POST",headers:{...X,"Content-Type":"application/json"},body:JSON.stringify(b||{})});
+const toast=t=>{const e=$("toast");e.textContent=t;e.style.display="block";setTimeout(()=>e.style.display="none",2600)};
+function showLogin(first){$("shell").style.display="none";$("login").style.display="grid";$("pw2").style.display=$("p2l").style.display=first?"block":"none";$("gb").textContent=first?"CREATE LOGIN":"SIGN IN";$("lh").textContent=first?"First run: choose the username and password for MediaHub (8+ characters).":""}
+$("lf").onsubmit=async e=>{e.preventDefault();const first=$("pw2").style.display=="block",u=$("un").value,p=$("pw").value;
+if(first&&(p!==$("pw2").value||p.length<8)){$("le").textContent="Passwords must match (8+ characters).";return}
+const r=await post(first?"/auth/setup":"/auth/login",{u,p,remember:$("rem").checked});
+if(!r.ok){$("le").textContent=r.status==429?"Too many attempts. Try again in 15 minutes.":"Incorrect username or password.";return}
+$("le").textContent="";$("pw").value="";openShell()};
+function openShell(){$("login").style.display="none";$("shell").style.display="flex";fit();
+$("tabs").innerHTML=SV.map(s=>`<button class="tab" id="t-${s[0]}" style="--tc:${s[2]}" onclick="sw('${s[0]}')"><img class="ti" src="/apps/${s[0]}.svg" alt="">${s[1]}<b id="b-${s[0]}" style="display:none"></b></button>`).join("");
+$("dd").innerHTML='<option value="home" id="o-home">Overview</option>'+SV.map(s=>`<option value="${s[0]}" id="o-${s[0]}">${s[1]}</option>`).join("");
+const c=localStorage.mediaTab;sw(SV.some(s=>s[0]==c)?c:"home");setTimeout(()=>SV.forEach(s=>mk(s[0])),1500)}
+function mk(id){if($("f-"+id))return;const f=document.createElement("iframe");f.id="f-"+id;f.src="/s/"+id+"/";$("frames").appendChild(f)}
+function sw(id){localStorage.mediaTab=id;const home=id=="home";if(!home)mk(id);document.querySelectorAll("#frames iframe").forEach(f=>f.style.display=f.id=="f-"+id?"block":"none");$("ov").style.display=home?"block":"none";$("brand").classList.toggle("on",home);SV.forEach(s=>$("t-"+s[0]).classList.toggle("on",s[0]==id));$("dd").value=id;$("ddi").style.display="none";if(home)$("ddi").removeAttribute("src");else $("ddi").src="/apps/"+id+".svg";document.documentElement.style.setProperty("--ac",home?"#7c5cff":SV.find(s=>s[0]==id)[2]);if(home)ovLoad()}
+addEventListener("message",e=>{if(e.origin!==location.origin||!e.data||e.data.hub!=="bell")return;const id=String(e.data.svc).toLowerCase(),n=+e.data.n||0,b=$("b-"+id),o=$("o-"+id),s=SV.find(x=>x[0]==id);if(b){b.textContent=n;b.style.display=n?"inline":"none"}if(o&&s)o.textContent=s[1]+(n?" ("+n+")":"")});
+/* ===== Overview: a live summary of every app ===== */
+const OV={busy:false,t:0,live:0,data:{}},SC=Object.fromEntries(SV.map(s=>[s[0],s[2]])),SN=Object.fromEntries(SV.map(s=>[s[0],s[1]]));
+const oe=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const ofb=b=>{b=+b||0;const u=["B","KB","MB","GB","TB","PB"];let i=0;while(b>=1024&&i<5){b/=1024;i++}return (i<2?Math.round(b):b.toFixed(1))+" "+u[i]};
+const ago=d=>{const s=(Date.now()-new Date(d))/1000;return s<90?"just now":s<3600?Math.round(s/60)+" min ago":s<86400?Math.round(s/3600)+" h ago":s<172800?"yesterday":Math.round(s/86400)+" days ago"};
+const inDays=d=>{const t=new Date();t.setHours(0,0,0,0);const x=new Date(d);x.setHours(0,0,0,0);const n=Math.round((x-t)/864e5);return n<=0?"Today":n==1?"Tomorrow":x.toLocaleDateString([],{weekday:"short",month:"short",day:"numeric"})};
+const iso=d=>new Date(Date.now()+d*864e5).toISOString().slice(0,10);
+async function oj(u,ms=15000){const c=new AbortController(),t=setTimeout(()=>c.abort(),ms);try{const r=await fetch(u,{signal:c.signal});if(r.status==401){location.reload();throw new Error("signed out")}if(!r.ok)throw new Error(r.status);const x=await r.text();try{return JSON.parse(x)}catch(e){return x}}finally{clearTimeout(t)}}
+const arr=(id,v,p)=>oj(`/s/${id}/api/${v}/${p}`),qb=p=>oj("/s/qbittorrent/api/v2/"+p),sab=q=>oj("/s/sabnzbd/sabapi?"+new URLSearchParams(q)).then(j=>{if(j&&j.status===false)throw new Error(j.error||"error");return j});
+const cov=(id,g,imgs)=>{const r=(imgs||[]).filter(i=>/poster|cover/.test(i.coverType)).map(i=>i.remoteUrl).filter(Boolean)[0];return `/s/${id}/cover?`+(g?"g="+encodeURIComponent(g):"")+(r?"&r="+encodeURIComponent(r):"")};
+const pl=(n,w)=>`${Number(n).toLocaleString()} ${w}${n==1?"":"s"}`;
+const ok=p=>p.then(v=>({ok:true,v}),e=>({ok:false,e}));
+async function ovLoad(force){clearInterval(OV.live);OV.live=setInterval(()=>{if($("ov").style.display=="block"&&!document.hidden)ovLive()},5000);
+if(!$("ov").innerHTML)$("ov").innerHTML='<h1>Overview</h1><div class="sub">Loading everything…</div>';
+if(OV.busy||(!force&&Date.now()-OV.t<60000&&OV.t)){if(OV.t){ovDraw();ovLive()}return}OV.busy=true;const D={};
+const [rM,rH,rQ,rC,rS,rHe,rD,rF,sS,sH,sQ,sC,sSt,sHe,sD,sF,lA,lH,lQ,lC,lSt,lHe,lD,lF,bI,bH,bSt,qV,qT,qX,nQ,nH,nV]=await Promise.all([
+ok(arr("radarr","v3","movie")),ok(arr("radarr","v3","history?page=1&pageSize=80&sortKey=date&sortDirection=descending&includeMovie=true")),ok(arr("radarr","v3","queue?pageSize=50&includeMovie=true&includeUnknownMovieItems=true")),ok(arr("radarr","v3",`calendar?start=${iso(0)}&end=${iso(14)}`)),ok(arr("radarr","v3","system/status")),ok(arr("radarr","v3","health")),ok(arr("radarr","v3","diskspace")),ok(arr("radarr","v3","rootfolder")),
+ok(arr("sonarr","v3","series")),ok(arr("sonarr","v3","history?page=1&pageSize=120&sortKey=date&sortDirection=descending&includeSeries=true&includeEpisode=true")),ok(arr("sonarr","v3","queue?pageSize=50&includeSeries=true&includeEpisode=true&includeUnknownSeriesItems=true")),ok(arr("sonarr","v3",`calendar?start=${iso(0)}&end=${iso(14)}&includeSeries=true`)),ok(arr("sonarr","v3","system/status")),ok(arr("sonarr","v3","health")),ok(arr("sonarr","v3","diskspace")),ok(arr("sonarr","v3","rootfolder")),
+ok(arr("lidarr","v1","artist")),ok(arr("lidarr","v1","history?page=1&pageSize=150&sortKey=date&sortDirection=descending&includeArtist=true&includeAlbum=true")),ok(arr("lidarr","v1","queue?pageSize=50&includeArtist=true&includeAlbum=true&includeUnknownArtistItems=true")),ok(arr("lidarr","v1",`calendar?start=${iso(0)}&end=${iso(14)}&includeArtist=true`)),ok(arr("lidarr","v1","system/status")),ok(arr("lidarr","v1","health")),ok(arr("lidarr","v1","diskspace")),ok(arr("lidarr","v1","rootfolder")),
+ok(arr("bookarr","v1","item")),ok(arr("bookarr","v1","history")),ok(arr("bookarr","v1","system/status")),
+ok(qb("app/version")),ok(qb("torrents/info")),ok(qb("transfer/info")),
+ok(sab({mode:"queue",limit:20})),ok(sab({mode:"history",limit:1})),ok(sab({mode:"version"}))]);const cfgd=await Promise.all(SV.map(s=>oj(`/s/${s[0]}/hub/settings`).then(c=>!!(c.local||c.remote),()=>true)));D.cfg=Object.fromEntries(SV.map((s,i)=>[s[0],cfgd[i]]));D.week=nH.ok&&nH.v.history&&nH.v.history.week_size;
+D.st={radarr:rS,sonarr:sSt,lidarr:lSt,bookarr:bSt,qbittorrent:qV,sabnzbd:nV};
+/* totals */
+const C=[];
+if(rM.ok){const m=rM.v;C.push(["radarr","Movies",m.length,[`${m.filter(x=>x.hasFile).length} downloaded · ${m.filter(x=>x.monitored&&!x.hasFile).length} missing`,ofb(m.reduce((a,x)=>a+(x.sizeOnDisk||0),0))]])}else C.push(["radarr","Movies",null])
+if(sS.ok){const m=sS.v,st=x=>x.statistics||{};C.push(["sonarr","TV shows",m.length,[pl(m.reduce((a,x)=>a+(st(x).episodeFileCount||0),0),"episode"),ofb(m.reduce((a,x)=>a+(st(x).sizeOnDisk||0),0))]])}else C.push(["sonarr","TV shows",null])
+if(lA.ok){const m=lA.v,st=x=>x.statistics||{};C.push(["lidarr","Artists",m.length,[pl(m.reduce((a,x)=>a+(st(x).albumCount||0),0),"album")+" · "+pl(m.reduce((a,x)=>a+(st(x).trackFileCount||0),0),"track"),ofb(m.reduce((a,x)=>a+(st(x).sizeOnDisk||0),0))]])}else C.push(["lidarr","Artists",null])
+if(bI.ok&&Array.isArray(bI.v)){const m=bI.v,n=t=>m.filter(x=>x.type==t).length;C.push(["bookarr","Books",m.length,[`${n("ebook")} ebooks · ${n("audiobook")} audiobooks · ${n("comic")} comics`]])}else C.push(["bookarr","Books",null])
+if(qT.ok&&Array.isArray(qT.v)){const t=qT.v,x=qX.ok?qX.v:{};C.push(["qbittorrent","Torrents",t.length,[`${t.filter(a=>/DL|downloading|metaDL/.test(a.state)).length} downloading · ${t.filter(a=>/UP|uploading/.test(a.state)).length} seeding`,`↓ ${ofb(x.dl_info_speed)}/s · ↑ ${ofb(x.up_info_speed)}/s`],"qbs"])}else C.push(["qbittorrent","Torrents",null])
+if(nQ.ok&&nQ.v.queue){const q=nQ.v.queue,h=nH.ok&&nH.v.history||{};C.push(["sabnzbd","Usenet queue",+q.noofslots||0,[q.paused?"Paused":`${q.status||""} · ${q.speed?q.speed+"B/s":"0 B/s"}`,h.week_size?`${h.week_size} this week`:""],"nzs"])}else C.push(["sabnzbd","Usenet queue",null])
+D.C=C;
+/* recently downloaded */
+const R=[],grp=(recs,id,fn)=>{const G={};(recs||[]).filter(r=>/imported$/i.test(r.eventType||"")).forEach(r=>{const k=r.downloadId||("x"+(r.albumId||r.seriesId||r.movieId||"")+(r.date||"").slice(0,13));(G[k]=G[k]||[]).push(r)});Object.values(G).forEach(l=>R.push(fn(l)))};
+if(rH.ok)grp(rH.v.records,"radarr",l=>{const r=l[0],m=r.movie||{};return{app:"radarr",date:r.date,title:m.title||r.sourceTitle,sub:[m.year,r.quality?.quality?.name].filter(Boolean).join(" · "),img:cov("radarr",r.movieId?"/MediaCover/"+r.movieId:"",m.images)}});
+if(sH.ok)grp(sH.v.records,"sonarr",l=>{const r=l[0],s=r.series||{},e=r.episode||{},n=new Set(l.map(x=>x.episodeId)).size;return{app:"sonarr",date:r.date,title:s.title||r.sourceTitle,sub:n>1?`Season ${e.seasonNumber} · ${n} episodes`:e.seasonNumber!=null?`S${String(e.seasonNumber).padStart(2,"0")}E${String(e.episodeNumber).padStart(2,"0")}${e.title?" · "+e.title:""}`:"",img:cov("sonarr",r.seriesId?"/MediaCover/"+r.seriesId:"",s.images)}});
+if(lH.ok)grp(lH.v.records,"lidarr",l=>{const r=l[0],a=r.album||{},ar=r.artist||{};return{app:"lidarr",sq:1,date:r.date,title:a.title||r.sourceTitle,sub:[ar.artistName,l.length>1?l.length+" tracks":""].filter(Boolean).join(" · "),img:cov("lidarr",r.albumId?"/MediaCover/Albums/"+r.albumId:"",a.images)}});
+if(bH.ok&&Array.isArray(bH.v))bH.v.filter(x=>x.state=="imported").slice(0,10).forEach(x=>R.push({app:"bookarr",date:x.updated||x.created,title:x.title,sub:"Book",ph:"📚"}));
+D.R=R.filter(x=>x.date).sort((a,b)=>new Date(b.date)-new Date(a.date)).slice(0,18);
+/* coming up */
+const U=[];if(rC.ok)rC.v.forEach(m=>[["digitalRelease","Digital release"],["physicalRelease","Physical release"],["inCinemas","In cinemas"]].forEach(([k,l])=>{if(m[k]&&m[k].slice(0,10)>=iso(0)&&m[k].slice(0,10)<=iso(14))U.push({app:"radarr",d:m[k],t:m.title,s:l})}));
+if(sC.ok)sC.v.forEach(e=>U.push({app:"sonarr",d:e.airDateUtc||e.airDate,t:e.series?.title||"",s:`S${String(e.seasonNumber).padStart(2,"0")}E${String(e.episodeNumber).padStart(2,"0")}${e.title?" · "+e.title:""}`,ok:e.hasFile}));
+if(lC.ok)lC.v.forEach(a=>U.push({app:"lidarr",d:a.releaseDate,t:a.artist?.artistName||"",s:a.title}));
+D.U=U.filter(x=>x.d&&new Date(x.d)>=new Date(iso(0))).sort((a,b)=>new Date(a.d)-new Date(b.d)).slice(0,10);
+/* needs attention: stuck downloads, download-client problems, offline apps */
+const N=[];[["radarr",rQ,rHe],["sonarr",sQ,sHe],["lidarr",lQ,lHe]].forEach(([id,q,h])=>{if(q.ok)(q.v.records||[]).filter(r=>/importBlocked|importPending|failedPending|failed/i.test(r.trackedDownloadState||"")||/warning|error/i.test(r.trackedDownloadStatus||"")).forEach(r=>N.push({app:id,t:(r.movie?.title||r.series?.title||r.artist?.artistName||r.title),s:(r.statusMessages||[]).map(x=>(x.messages||[]).join(" ")).join(" ")||r.errorMessage||"Needs a manual import",tag:"Stuck download",c:"o"}));
+if(h.ok)h.v.filter(x=>/downloadclient|rootfolder|importmechanism/i.test(x.source||"")).forEach(x=>N.push({app:id,t:SN[id],s:x.message,tag:x.type=="error"?"Error":"Warning",c:x.type=="error"?"r":"o"}))});
+Object.entries(D.st).forEach(([id,r])=>{if(!r.ok)N.push(D.cfg[id]?{app:id,t:SN[id],s:"Can't reach it. Check that it's running and the address is right.",tag:"Offline",c:"r"}:{app:id,t:SN[id],s:"Not set up yet. Open its tab, then Settings → Connection.",tag:"Not set up",c:""})});
+D.N=N;
+/* storage */
+const disks=[];[[rD,rF],[sD,sF],[lD,lF]].forEach(([d,f])=>{if(!d.ok)return;const roots=f.ok?f.v.map(x=>x.path):[];d.v.forEach(x=>{if(!x.totalSpace||x.totalSpace<1e10)return;if(roots.length&&!roots.some(p=>p.startsWith(x.path)))return;if(roots.length){const best=roots.map(p=>d.v.filter(y=>p.startsWith(y.path)).sort((a,b)=>b.path.length-a.path.length)[0]);if(!best.includes(x))return}const k=x.totalSpace+"|"+x.freeSpace;if(!disks.some(y=>y.k==k))disks.push({...x,k})})});D.disks=disks;
+OV.data=D;OV.t=Date.now();OV.busy=false;ovDraw();ovLive()}
+function ovDraw(){const D=OV.data;if(!D.C)return;const go=id=>`onclick="sw('${id}')"`;
+$("ov").innerHTML=`<h1>Overview</h1><div class="sub">Everything at a glance · updated ${ago(OV.t)} <button class="btn" style="padding:4px 12px;font-size:12px" onclick="ovLoad(1)">↻ Refresh</button></div>
+<div class="og">${D.C.map(([id,l,n,x,lid])=>`<div class="oc st ${n==null?"off":""}" style="--sc:${SC[id]}" ${go(id)}><div class="tl"><img src="/apps/${id}.svg" alt="">${l}</div><div class="n">${n==null?"—":Number(n).toLocaleString()}</div><div class="x" ${lid?`id="${lid}"`:""}>${n==null?(D.cfg[id]?"Can't reach it":"Not set up yet"):(x||[]).filter(Boolean).map(oe).join("<br>")}</div></div>`).join("")}</div>
+<div class="o2"><div class="oc wide"><h3>Recently downloaded <small>${D.R.length?"latest "+D.R.length:""}</small></h3>${D.R.length?`<div class="rec">${D.R.map(x=>`<div class="rc ${x.sq?"sq":""}" style="--sc:${SC[x.app]}" ${go(x.app)} title="${oe(x.title)}"><div class="po" ${x.img?`data-bg="${oe(x.img)}"`:""}><span class="ph">${x.ph||(x.app=="lidarr"?"🎵":x.app=="sonarr"?"📺":"🎬")}</span><b>${SN[x.app]}</b></div><div class="t">${oe(x.title)}</div><div class="s">${oe(x.sub||"")}</div><div class="s">${ago(x.date)}</div></div>`).join("")}</div>`:'<div class="emp">Nothing downloaded in a while.</div>'}</div>
+<div class="oc"><h3>Downloading now</h3><div id="ovdl">${OV.dl||'<div class="emp">Checking…</div>'}</div></div>
+<div class="oc"><h3>Needs attention <small>${D.N.length||""}</small></h3>${D.N.map(x=>`<div class="lr" style="--sc:${SC[x.app]}" ${go(x.app)}><span class="dot"></span><div class="d"><div>${oe(x.t)}</div><div class="m">${oe(x.s)}</div></div><span class="tg2 ${x.c}">${oe(x.tag)}</span></div>`).join("")||'<div class="emp">All good. Nothing needs you right now. 👍</div>'}</div>
+<div class="oc"><h3>Coming up <small>next 2 weeks</small></h3>${D.U.map(x=>`<div class="lr" style="--sc:${SC[x.app]}" ${go(x.app)}><span class="dot"></span><div class="d"><div>${oe(x.t)}</div><div class="m">${oe(x.s)}</div></div><span class="m" style="white-space:nowrap">${inDays(x.d)}</span></div>`).join("")||'<div class="emp">Nothing scheduled.</div>'}</div>
+<div class="oc dk"><h3>Storage</h3>${D.disks.map(d=>{const u=1-d.freeSpace/d.totalSpace;return `<div style="margin-bottom:12px;font-size:13px"><div style="display:flex;justify-content:space-between;gap:8px"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${oe(d.label||d.path)}</span><span class="m" style="color:var(--m);white-space:nowrap">${ofb(d.freeSpace)} free of ${ofb(d.totalSpace)}</span></div><div class="bar"><i style="width:${(u*100).toFixed(1)}%;${u>.9?"background:#fb5a7a":""}"></i></div></div>`}).join("")||'<div class="emp">No disk info yet.</div>'}</div>
+<div class="oc"><h3>Apps</h3>${SV.map(([id,name])=>{const r=D.st[id]||{},v=r.ok?(typeof r.v=="string"?r.v:r.v.version||""):"";return `<div class="lr" style="--sc:${SC[id]}" ${go(id)}><img src="/apps/${id}.svg" alt="" style="width:20px;height:20px;border-radius:5px"><div class="d"><div>${name}</div></div><span class="m">${oe(String(v).replace(/^v/,""))}</span><span class="tg2 ${r.ok?"g":D.cfg[id]?"r":""}">${r.ok?"Online":D.cfg[id]?"Offline":"Not set up"}</span></div>`}).join("")}</div></div>`;
+document.querySelectorAll("#ov [data-bg]").forEach(e=>{const u=e.dataset.bg,i=new Image();i.onload=()=>{e.style.backgroundImage=`url("${u}")`;const p=e.querySelector(".ph");if(p)p.remove()};i.src=u})}
+async function ovLive(){const el=$("ovdl");if(!el)return;const [t,x,q]=await Promise.all([ok(qb("torrents/info?filter=downloading&sort=dlspeed&reverse=true")),ok(qb("transfer/info")),ok(sab({mode:"queue",limit:10}))]);const L=[];
+if(t.ok&&Array.isArray(t.v))t.v.slice(0,8).forEach(a=>L.push({app:"qbittorrent",n:a.name,p:a.progress*100,m:`${(a.progress*100).toFixed(0)}% · ↓ ${ofb(a.dlspeed)}/s${a.eta>0&&a.eta<8640000?" · "+Math.round(a.eta/60)+" min left":""}`}));
+if(q.ok&&q.v.queue)(q.v.queue.slots||[]).slice(0,8).forEach(s=>L.push({app:"sabnzbd",n:s.filename,p:+s.percentage||0,m:`${s.percentage}% · ${s.status||""}${s.timeleft&&s.timeleft!="0:00:00"?" · "+s.timeleft+" left":""}`}));
+el.innerHTML=OV.dl=L.map(x=>`<div class="lr" style="--sc:${SC[x.app]}" onclick="sw('${x.app}')"><span class="dot"></span><div class="d"><div>${oe(x.n)}</div><div class="m">${oe(x.m)}</div><div class="pb"><i style="width:${Math.min(100,x.p)}%"></i></div></div></div>`).join("")||'<div class="emp">Nothing downloading right now.</div>';
+if(x.ok&&$("qbs")&&t.ok){const c=OV.data.C.find(c=>c[0]=="qbittorrent");if(c&&c[3])$("qbs").innerHTML=oe(c[3][0])+"<br>"+oe(`↓ ${ofb(x.v.dl_info_speed)}/s · ↑ ${ofb(x.v.up_info_speed)}/s`)}
+if(q.ok&&q.v.queue&&$("nzs")){const Q=q.v.queue;$("nzs").innerHTML=oe(Q.paused?"Paused":`${Q.status||""} · ${Q.speed?Q.speed+"B/s":"0 B/s"}`)+(OV.data.week?"<br>"+oe(OV.data.week+" this week"):"");const c=OV.data.C.find(c=>c[0]=="sabnzbd");const n=document.querySelector('.st[style*="'+SC.sabnzbd+'"] .n');if(n)n.textContent=+Q.noofslots||0}}
+
+/* keep the top bar pinned: lock page scroll and follow the visual viewport (iOS keyboard / toolbar shifts) */
+function fit(){const v=window.visualViewport,e=$("shell").style;if(!v||v.scale>1.01){e.top="0px";e.height="";e.bottom="0px";return}e.top=v.offsetTop+"px";e.height=v.height+"px";e.bottom="auto"}
+if(window.visualViewport)["resize","scroll"].forEach(n=>visualViewport.addEventListener(n,()=>{fit();scrollTo(0,0)}));
+addEventListener("scroll",()=>scrollTo(0,0));addEventListener("orientationchange",()=>setTimeout(fit,300));
+(async()=>{const j=await (await fetch("/auth/me")).json();if(j.ver!==10)document.body.insertAdjacentHTML("afterbegin",'<div onclick="this.remove()" style="position:fixed;top:0;left:0;right:0;z-index:99;background:#b45309;color:#fff;padding:10px;font-size:13px;text-align:center;cursor:pointer">Update needed: replace server.py with the one in the new zip, then restart the container (tap to hide).</div>');j.user?openShell():showLogin(j.setup)})();
+</script></body></html>
